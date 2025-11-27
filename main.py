@@ -43,7 +43,7 @@ package = ApplicationPackage(
 vespa_docker = VespaDocker()
 app = vespa_docker.deploy(application_package=package)
 
-dataset = load_dataset("HuggingFaceFW/fineweb", "CC-MAIN-2025-26", split="train", streaming=True)
+dataset = load_dataset("HuggingFaceFW/fineweb", "CC-MAIN-2025-26", split="train", streaming=True).take(1000)
 vespa_feed = dataset.map(lambda x: {
     "id": x["id"],
     "fields": {
