@@ -77,6 +77,24 @@ The web interface consists of:
   - [static/styles.css](static/styles.css): Dark theme styling with gradients
   - [static/app.js](static/app.js): Search logic and result rendering
 
+## Gateway registration (tùy chọn)
+
+Service có thể tự đăng ký route vào gateway (xem [gateway_register.py](gateway_register.py) được gọi trong `ui.py` startup).
+
+1. Đặt biến môi trường:
+   - `SERVICE_NAME` (vd `simple-search`)
+   - `SERVICE_BASE_URL` (URL service này, vd `http://127.0.0.1:8000`)
+   - `GATEWAY_URL` (URL gateway, vd `http://127.0.0.1:30090`)
+   - `GATEWAY_PREFIX` (tùy chọn, vd `/ai-search` để tránh trùng path)
+   - `REGISTER_RETRIES` / `REGISTER_DELAY` (tùy chọn, mặc định 5 / 1.0)
+2. Chạy server:  
+   ```bash
+   uvicorn ui:app --host 0.0.0.0 --port 8000
+   ```
+3. Kiểm tra log: thấy thông báo “Gateway registered … routes=2” nghĩa là thành công.
+4. Mở Swagger gateway để xác nhận hai route đã xuất hiện (có prefix nếu đặt): `/search` và `/search/bm25`.
+5. Khi đổi host/port hoặc prefix, cập nhật env và khởi động lại để đăng ký lại.
+
 ### Running the UI
 
 Start the FastAPI server:
